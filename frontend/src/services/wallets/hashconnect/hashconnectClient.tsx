@@ -91,6 +91,7 @@ class HashConnectWallet implements WalletInterface {
     // after getting the contract call results, use ethers and abi.decode to decode the call_result
     return txFrozen.transactionId;
   }
+  
   disconnect() {
     const pairingData = hashConnect.hcData.pairingData[hashConnect.hcData.pairingData.length - 1];
     hashConnect.disconnect(pairingData.topic);

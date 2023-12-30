@@ -80,5 +80,15 @@ contract Voting {
         }
     }
 
+    function getProposal(
+        uint index
+    ) public view returns (uint, address, string memory) {
+        return (
+            proposals[index].voteCount,
+            proposals[index].recipient,
+            proposals[index].name
+        );
+    }
+
     receive() external payable {}
 }

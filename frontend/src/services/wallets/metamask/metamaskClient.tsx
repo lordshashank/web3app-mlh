@@ -12,24 +12,24 @@ const currentNetworkConfig = appConfig.networks.testnet;
 export const switchToHederaNetwork = async (ethereum: any) => {
   try {
     await ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: currentNetworkConfig.chainId }] // chainId must be in hexadecimal numbers
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: currentNetworkConfig.chainId }], // chainId must be in hexadecimal numbers
     });
   } catch (error: any) {
     if (error.code === 4902) {
       try {
         await ethereum.request({
-          method: 'wallet_addEthereumChain',
+          method: "wallet_addEthereumChain",
           params: [
             {
               chainName: `Hedera (${currentNetworkConfig.network})`,
               chainId: currentNetworkConfig.chainId,
               nativeCurrency: {
-                name: 'HBAR',
-                symbol: 'HBAR',
-                decimals: 18
+                name: "HBAR",
+                symbol: "HBAR",
+                decimals: 18,
               },
-              rpcUrls: [currentNetworkConfig.jsonRpcUrl]
+              rpcUrls: [currentNetworkConfig.jsonRpcUrl],
             },
           ],
         });
@@ -39,7 +39,7 @@ export const switchToHederaNetwork = async (ethereum: any) => {
     }
     console.error(error);
   }
-}
+};
 
 const { ethereum } = window as any;
 const getProvider = () => {
@@ -48,7 +48,7 @@ const getProvider = () => {
   }
 
   return new ethers.providers.Web3Provider(ethereum);
-}
+};
 
 // returns a list of accounts
 // otherwise empty array
@@ -56,7 +56,7 @@ export const connectToMetamask = async () => {
   const provider = getProvider();
 
   // keep track of accounts returned
-  let accounts: string[] = []
+  let accounts: string[] = [];
 
   try {
     await switchToHederaNetwork(ethereum);
@@ -71,13 +71,14 @@ export const connectToMetamask = async () => {
   }
 
   return accounts;
-}
+};
 
 class MetaMaskWallet implements WalletInterface {
   private convertAccountIdToSolidityAddress(accountId: AccountId): string {
-    const accountIdString = accountId.evmAddress !== null
-      ? accountId.evmAddress.toString()
-      : accountId.toSolidityAddress();
+    const accountIdString =
+      accountId.evmAddress !== null
+        ? accountId.evmAddress.toString()
+        : accountId.toSolidityAddress();
 
     return `0x${accountIdString}`;
   }
@@ -105,20 +106,24 @@ class MetaMaskWallet implements WalletInterface {
     }
   }
 
-  async transferFungibleToken(toAddress: AccountId, tokenId: TokenId, amount: number) {
+  async transferFungibleToken(
+    toAddress: AccountId,
+    tokenId: TokenId,
+    amount: number
+  ) {
     const hash = await this.executeContractFunction(
       ContractId.fromString(tokenId.toString()),
-      'transfer',
+      "transfer",
       new ContractFunctionParameterBuilder()
         .addParam({
           type: "address",
           name: "recipient",
-          value: this.convertAccountIdToSolidityAddress(toAddress)
+          value: this.convertAccountIdToSolidityAddress(toAddress),
         })
         .addParam({
           type: "uint256",
           name: "amount",
-          value: amount
+          value: amount,
         }),
       appConfig.constants.METAMASK_GAS_LIMIT_TRANSFER_FT
     );
@@ -126,27 +131,31 @@ class MetaMaskWallet implements WalletInterface {
     return hash;
   }
 
-  async transferNonFungibleToken(toAddress: AccountId, tokenId: TokenId, serialNumber: number) {
+  async transferNonFungibleToken(
+    toAddress: AccountId,
+    tokenId: TokenId,
+    serialNumber: number
+  ) {
     const provider = getProvider();
     const addresses = await provider.listAccounts();
     const hash = await this.executeContractFunction(
       ContractId.fromString(tokenId.toString()),
-      'transferFrom',
+      "transferFrom",
       new ContractFunctionParameterBuilder()
         .addParam({
           type: "address",
           name: "from",
-          value: addresses[0]
+          value: addresses[0],
         })
         .addParam({
           type: "address",
           name: "to",
-          value: this.convertAccountIdToSolidityAddress(toAddress)
+          value: this.convertAccountIdToSolidityAddress(toAddress),
         })
         .addParam({
           type: "uint256",
           name: "nftId",
-          value: serialNumber
+          value: serialNumber,
         }),
       appConfig.constants.METAMASK_GAS_LIMIT_TRANSFER_NFT
     );
@@ -159,7 +168,7 @@ class MetaMaskWallet implements WalletInterface {
     // convert tokenId to contract id
     const hash = await this.executeContractFunction(
       ContractId.fromString(tokenId.toString()),
-      'associate',
+      "associate",
       new ContractFunctionParameterBuilder(),
       appConfig.constants.METAMASK_GAS_LIMIT_ASSOCIATE
     );
@@ -169,21 +178,30 @@ class MetaMaskWallet implements WalletInterface {
 
   // Purpose: build contract execute transaction and send to hashconnect for signing and execution
   // Returns: Promise<TransactionId | null>
-  async executeContractFunction(contractId: ContractId, functionName: string, functionParameters: ContractFunctionParameterBuilder, gasLimit: number) {
+  async executeContractFunction(
+    contractId: ContractId,
+    functionName: string,
+    functionParameters: ContractFunctionParameterBuilder,
+    gasLimit: number
+  ) {
     const provider = getProvider();
     const signer = await provider.getSigner();
     const abi = [
-      `function ${functionName}(${functionParameters.buildAbiFunctionParams()})`
+      `function ${functionName}(${functionParameters.buildAbiFunctionParams()})`,
     ];
 
     // create contract instance for the contract id
     // to call the function, use contract[functionName](...functionParameters, ethersOverrides)
-    const contract = new ethers.Contract(`0x${contractId.toSolidityAddress()}`, abi, signer);
+    const contract = new ethers.Contract(
+      `0x${contractId.toSolidityAddress()}`,
+      abi,
+      signer
+    );
     try {
       const txResult = await contract[functionName](
         ...functionParameters.buildEthersParams(),
         {
-          gasLimit: gasLimit === -1 ? undefined : gasLimit
+          gasLimit: gasLimit === -1 ? undefined : gasLimit,
         }
       );
       return txResult.hash;
@@ -194,9 +212,9 @@ class MetaMaskWallet implements WalletInterface {
   }
 
   disconnect() {
-    alert("Please disconnect using the Metamask extension.")
+    alert("Please disconnect using the Metamask extension.");
   }
-};
+}
 
 export const metamaskWallet = new MetaMaskWallet();
 
@@ -226,12 +244,11 @@ export const MetaMaskClient = () => {
       // cleanup by removing listeners
       return () => {
         ethereum.removeAllListeners("accountsChanged");
-      }
+      };
     } catch (error: any) {
       console.error(error.message ? error.message : error);
     }
   }, [setMetamaskAccountAddress]);
 
   return null;
-}
-
+};
