@@ -1,3 +1,4 @@
+// Import necessary modules and components from external libraries
 import { AccountId, ContractId, TokenId } from "@hashgraph/sdk";
 import { Button, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -9,7 +10,10 @@ import useVoteContract from "../hooks/useVotingContract";
 import deployVotingContract from "../hooks/deployVotingContract";
 import useVotingContractData from "../hooks/useVotingContractData";
 export default function Home() {
+  // Access the wallet interface using a custom hook
   const { walletInterface } = useWalletInterface();
+
+  // Define state variables for the recipient's account ID and the amount to transfer
   const [toAccountId, setToAccountId] = useState("");
   const [amount, setAmount] = useState(1);
   const { addProposal, vote, distributeFunds } = useVoteContract();
@@ -24,10 +28,13 @@ export default function Home() {
   } = useVotingContractData();
   const deployContract = deployVotingContract();
   return (
+    // Use a stack layout with centered alignment and specified spacing
     <Stack alignItems="center" spacing={4}>
       <Typography variant="h4" color="white">
         Let's buidl a dApp on Hedera
       </Typography>
+
+      {/* Check if the wallet interface is available */}
       {walletInterface !== null && (
         <>
           <Stack direction="row" gap={2} alignItems="center">
@@ -47,6 +54,8 @@ export default function Home() {
               onChange={(e) => setToAccountId(e.target.value)}
               label="account id or evm address"
             />
+
+            {/* Button for initiating the transfer */}
             <Button
               variant="contained"
               onClick={async () => {
@@ -56,6 +65,7 @@ export default function Home() {
                 );
               }}
             >
+              {/* Icon for the transfer button */}
               <SendIcon />
             </Button>
             <Button
