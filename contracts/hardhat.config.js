@@ -10,7 +10,7 @@ module.exports = {
     timeout: 100000000,
   },
   networks: {
-    hedara: {
+    hedera: {
       chainId: 296,
       url: "https://testnet.hashio.io/api",
       accounts: [PRIVATE_KEY],
