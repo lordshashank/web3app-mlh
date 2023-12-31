@@ -55,7 +55,7 @@ const useVotingContractData = () => {
       console.log(proposal);
       return proposal;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
