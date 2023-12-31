@@ -1,13 +1,13 @@
-import { AddCircle, ArrowBack } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import AnimatedHr from "../components/AnimatedHr";
 import { useNavigate, useParams } from "react-router-dom";
 import { projects, proposals } from "../constants/data";
 import { Button } from "@mui/material";
 import AddProjectModal from "../components/AddProjectModal";
+import VoteModal from "../components/VoteModal";
+import ProjectCard from "../components/ProjectCard";
 
-interface ProposalPageProps {}
-
-const ProposalPage = ({}: ProposalPageProps) => {
+const ProposalPage = () => {
   const navigate = useNavigate();
   const { name } = useParams();
 
@@ -90,45 +90,11 @@ const ProposalPage = ({}: ProposalPageProps) => {
 
       <div className="grid mt-6 gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {projects.map((project) => (
-          <div
+          <ProjectCard
             key={project.id}
-            role="button"
-            onClick={() =>
-              navigate(
-                `/proposals/${name}/${project.title.replaceAll(" ", "-")}`
-              )
-            }
-            className="border relative transition hover:scale-110 border-purple-900/50 aspect-[11/16] flex flex-col"
-          >
-            <div className="aspect-[16/10] relative">
-              <img
-                src={project.imageUrl}
-                alt={project.description}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="w-full flex-col flex items-center flex-1">
-              <p className="mt-4 drop-shadow-md">{project.title}</p>
-
-              <span className="text-xs text-zinc-400 mt-8">TOTAL VOTES</span>
-              <p className="font-semibold mb-2 tracking-widest text-purple-700">
-                {project.totalVotes}
-              </p>
-              <div className="absolute left-1 right-1 bottom-1">
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    alert("Voted!");
-                  }}
-                  className="w-full"
-                  variant="outlined"
-                  size="small"
-                >
-                  Vote
-                </Button>
-              </div>
-            </div>
-          </div>
+            project={project}
+            proposalName={name!}
+          />
         ))}
         <AddProjectModal />
       </div>

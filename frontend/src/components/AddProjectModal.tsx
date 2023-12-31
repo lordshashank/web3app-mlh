@@ -2,7 +2,6 @@ import { AddCircle } from "@mui/icons-material";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 type formSchema = {
   name: string;
@@ -11,11 +10,8 @@ type formSchema = {
   imageUrl: string;
 };
 
-interface AddProjectModalProps {}
-
-const AddProjectModal = ({}: AddProjectModalProps) => {
+const AddProjectModal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
@@ -29,7 +25,6 @@ const AddProjectModal = ({}: AddProjectModalProps) => {
   const onSubmit = async (values: any) => {
     try {
       console.log(values);
-      navigate("/proposals");
     } catch (error) {
       console.error("Error deploying contract:", error);
     }
@@ -78,34 +73,6 @@ const AddProjectModal = ({}: AddProjectModalProps) => {
               multiline
               rows={8}
             />
-            {/*
-            <div className="flex gap-3 items-center">
-              <TextField
-                {...register("votingFactor")}
-                type="number"
-                label="Voting factor"
-              />
-
-              <TextField
-                {...register("votesPerVoter")}
-                type="number"
-                label="Total votes per voter"
-              />
-            </div>
-
-            <div className="flex gap-3 items-center">
-              <TextField
-                {...register("projectLimit")}
-                type="number"
-                label="Project limit"
-              />
-
-              <TextField
-                {...register("totalFunds")}
-                type="number"
-                label="Total funds"
-              />
-            </div> */}
 
             <div className="border-t-2 w-full border-slate-800 mb-4" />
 
