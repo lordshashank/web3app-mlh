@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import deployVotingContract from "../hooks/deployVotingContract";
 interface ConfigureProposalProps {}
 
 type formSchema = {
@@ -13,6 +13,7 @@ type formSchema = {
 
 const ConfigureProposal = ({}: ConfigureProposalProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const deployContract = deployVotingContract();
 
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
@@ -23,7 +24,13 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
     },
   });
 
-  const onSubmit = (values: formSchema) => {
+  const onSubmit = async (values: formSchema) => {
+    await deployContract(
+      values.votingFactor,
+      values.votesPerVoter,
+      values.proposalLimit,
+      values.totalFunds
+    );
     console.log(values);
   };
 

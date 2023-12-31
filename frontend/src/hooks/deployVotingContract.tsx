@@ -18,27 +18,32 @@ const deployVotingContract = () => {
     _totalFunds: number
   ) {
     const provider = getProvider();
-    const signer = provider.getSigner(); // Create a new instance of the Contract
+    try {
+      const provider = getProvider();
+      const signer = provider.getSigner(); // Create a new instance of the Contract
 
-    // Create a factory for the Contract
-    let factory = new ethers.ContractFactory(
-      abi.Voting,
-      bytecode.Voting,
-      signer
-    );
+      // Create a factory for the Contract
+      let factory = new ethers.ContractFactory(
+        abi.Voting,
+        bytecode.Voting,
+        signer
+      );
 
-    // Notice we pass in the constructor parameters to the deploy method
-    let contract = await factory.deploy(
-      _votingFactor,
-      _totalVotesPerVoter,
-      _proposalLimit,
-      { value: ethers.utils.parseEther(_totalFunds.toString()) }
-    );
+      // Notice we pass in the constructor parameters to the deploy method
+      let contract = await factory.deploy(
+        _votingFactor,
+        _totalVotesPerVoter,
+        _proposalLimit,
+        { value: ethers.utils.parseEther(_totalFunds.toString()) }
+      );
+      console.log(contract.address);
+      // The contract is NOT deployed yet; we must wait until it is mined
+      const deployedContract = await contract.deployed();
 
-    // The contract is NOT deployed yet; we must wait until it is mined
-    const deployedContract = await contract.deployed();
-
-    return contract;
+      return contract;
+    } catch (error) {
+      console.error("Error deploying contract: ", error);
+    }
   }
 
   return deployContract;
