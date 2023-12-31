@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const AiwithText: React.FC = () => {
-    const genAI = new GoogleGenerativeAI('AIzaSyDtiBA7Z3cIgjqzSktQUm0zGj3uQBAWuso');
+    const genAI = new GoogleGenerativeAI('AIzaSyBGiiz7at5TYix-VPrKeCtjLB_WJtqHMO0');
 
     const [search, setSearch] = useState<string>('');
     const [aiResponse, setResponse] = useState<string>('');
