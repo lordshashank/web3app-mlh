@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import AnimatedHr from "../components/AnimatedHr";
 import { ArrowBack } from "@mui/icons-material";
+import { proposals } from "../constants/data";
 
 const Proposals = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Proposals = () => {
   return (
     <div className="max-w-screen-lg px-4 mx-auto mt-8">
       <button
-        className="mb-8 p-2 bg-purple-900/10 rounded-md"
+        className="mb-8 p-2 bg-purple-900/10 rounded-md transition text-zinc-400 hover:text-zinc-100 hover:bg-purple-900/30"
         onClick={() => navigate(-1)}
       >
         <ArrowBack fontSize="medium" />
@@ -18,9 +19,9 @@ const Proposals = () => {
       </h1>
       <AnimatedHr />
 
-      {data ? (
+      {proposals ? (
         <div className="grid gap-4 grid-cols-2 md:grid-cols-3 mt-6 lg:grid-cols-4">
-          {data.map((item, index) => (
+          {proposals.map((item, index) => (
             <div
               key={index}
               role="button"
@@ -51,22 +52,3 @@ const Proposals = () => {
 };
 
 export default Proposals;
-
-const data = [
-  {
-    name: "Idk",
-    totalFunds: 1234,
-  },
-  {
-    name: "A random proposal",
-    totalFunds: 54,
-  },
-  {
-    name: "The name of the proposal",
-    totalFunds: 5468546,
-  },
-  {
-    name: "Idk omg",
-    totalFunds: 21321,
-  },
-];

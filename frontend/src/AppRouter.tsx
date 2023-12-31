@@ -9,7 +9,7 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/proposals" element={<Proposals />} />
-        <Route path="/proposals/:proposalID" element={<ProposalPage />} />
+        <Route path="/proposals/:name" element={<ProposalPage />} />
       </Routes>
     </Router>
   );

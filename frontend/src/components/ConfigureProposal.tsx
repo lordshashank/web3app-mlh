@@ -9,7 +9,7 @@ type formSchema = {
   name: string;
   votingFactor: number;
   votesPerVoter: number;
-  proposalLimit: number;
+  projectLimit: number;
   totalFunds: number;
 };
 
@@ -21,7 +21,7 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
       name: "",
-      proposalLimit: 0,
+      projectLimit: 0,
       totalFunds: 0,
       votesPerVoter: 0,
       votingFactor: 0,
@@ -33,7 +33,7 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
       await deployContract(
         values.votingFactor,
         values.votesPerVoter,
-        values.proposalLimit,
+        values.projectLimit,
         values.totalFunds
       );
       console.log(values);
@@ -90,9 +90,9 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
 
             <div className="flex gap-3 items-center">
               <TextField
-                {...register("proposalLimit")}
+                {...register("projectLimit")}
                 type="number"
-                label="Proposal limit"
+                label="Project limit"
               />
 
               <TextField

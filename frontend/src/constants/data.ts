@@ -1,0 +1,73 @@
+export const proposals = [
+  {
+    name: "Idk",
+    totalFunds: 1234,
+    totalVotesPerVoter: 45,
+    projectLimit: 76,
+    votingFactor: 1,
+  },
+  {
+    name: "A random proposal",
+    totalFunds: 54,
+    totalVotesPerVoter: 88,
+    projectLimit: 55,
+    votingFactor: 2,
+  },
+  {
+    name: "The name of the proposal",
+    totalFunds: 5468546,
+    totalVotesPerVoter: 32,
+    projectLimit: 60,
+    votingFactor: 2,
+  },
+  {
+    name: "Idk omg",
+    totalFunds: 21321,
+    totalVotesPerVoter: 10,
+    projectLimit: 21,
+    votingFactor: 1,
+  },
+  // Additional dummy items
+  {
+    name: "Future Ventures",
+    totalFunds: 10200,
+    totalVotesPerVoter: 50,
+    projectLimit: 30,
+    votingFactor: 2,
+  },
+  {
+    name: "Innovative Ideas",
+    totalFunds: 5000,
+    totalVotesPerVoter: 20,
+    projectLimit: 40,
+    votingFactor: 1,
+  },
+  {
+    name: "Tech Revolution",
+    totalFunds: 7500,
+    totalVotesPerVoter: 35,
+    projectLimit: 25,
+    votingFactor: 2,
+  },
+  {
+    name: "Green Initiatives",
+    totalFunds: 8600,
+    totalVotesPerVoter: 42,
+    projectLimit: 50,
+    votingFactor: 1,
+  },
+  {
+    name: "Community Project",
+    totalFunds: 3200,
+    totalVotesPerVoter: 16,
+    projectLimit: 45,
+    votingFactor: 1,
+  },
+  {
+    name: "Education for All",
+    totalFunds: 4100,
+    totalVotesPerVoter: 30,
+    projectLimit: 35,
+    votingFactor: 2,
+  },
+];
