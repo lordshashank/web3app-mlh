@@ -2,22 +2,28 @@ import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import deployVotingContract from "../hooks/deployVotingContract";
+import { useNavigate } from "react-router-dom";
 interface ConfigureProposalProps {}
 
 type formSchema = {
+  name: string;
+  description: string;
   votingFactor: number;
   votesPerVoter: number;
-  proposalLimit: number;
+  projectLimit: number;
   totalFunds: number;
 };
 
 const ConfigureProposal = ({}: ConfigureProposalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const deployContract = deployVotingContract();
+  const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
-      proposalLimit: 0,
+      name: "",
+      description: "",
+      projectLimit: 0,
       totalFunds: 0,
       votesPerVoter: 0,
       votingFactor: 0,
@@ -25,24 +31,31 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
   });
 
   const onSubmit = async (values: formSchema) => {
-    await deployContract(
-      values.votingFactor,
-      values.votesPerVoter,
-      values.proposalLimit,
-      values.totalFunds
-    );
-    console.log(values);
+    try {
+      await deployContract(
+        values.votingFactor,
+        values.votesPerVoter,
+        values.projectLimit,
+        values.totalFunds
+      );
+      console.log(values);
+      navigate("/proposals");
+    } catch (error) {
+      console.error("Error deploying contract:", error);
+    }
   };
 
   return (
     <>
       <Button
         variant="outlined"
+        size="large"
+        className="w-full"
         onClick={() => {
           setIsOpen(true);
         }}
       >
-        configure funding proposal
+        Add Funding Proposal
       </Button>
 
       <Dialog
@@ -57,34 +70,48 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-3 md:px-4 mb-4"
+            className="flex flex-col gap-6 md:px-4 mb-4"
           >
-            <div className="border-t-2 w-full border-slate-800 my-4" />
-            <TextField
-              {...register("votingFactor")}
-              type="number"
-              label="Voting factor"
-            />
+            <div className="border-t-2 w-full border-slate-800 mt-4" />
+
+            <TextField {...register("name")} label="Proposal name" />
 
             <TextField
-              {...register("votesPerVoter")}
-              type="number"
-              label="Total votes per voter"
+              {...register("description")}
+              label="Description"
+              multiline
+              rows={8}
             />
 
-            <TextField
-              {...register("proposalLimit")}
-              type="number"
-              label="Proposal limit"
-            />
+            <div className="flex gap-3 items-center">
+              <TextField
+                {...register("votingFactor")}
+                type="number"
+                label="Voting factor"
+              />
 
-            <TextField
-              {...register("totalFunds")}
-              type="number"
-              label="Total funds"
-            />
+              <TextField
+                {...register("votesPerVoter")}
+                type="number"
+                label="Total votes per voter"
+              />
+            </div>
 
-            <div className="border-t-2 w-full border-slate-800 my-4" />
+            <div className="flex gap-3 items-center">
+              <TextField
+                {...register("projectLimit")}
+                type="number"
+                label="Project limit"
+              />
+
+              <TextField
+                {...register("totalFunds")}
+                type="number"
+                label="Total funds"
+              />
+            </div>
+
+            <div className="border-t-2 w-full border-slate-800 mb-4" />
 
             <Button type="submit" className="w-full" variant="contained">
               Deploy Contract

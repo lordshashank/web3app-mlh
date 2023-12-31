@@ -10,6 +10,8 @@ import useVoteContract from "../hooks/useVotingContract";
 import deployVotingContract from "../hooks/deployVotingContract";
 import useVotingContractData from "../hooks/useVotingContractData";
 import ConfigureProposal from "../components/ConfigureProposal";
+import AnimatedHr from "../components/AnimatedHr";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
   // Access the wallet interface using a custom hook
   const { walletInterface } = useWalletInterface();
@@ -17,6 +19,8 @@ export default function Home() {
   // Define state variables for the recipient's account ID and the amount to transfer
   const [toAccountId, setToAccountId] = useState("");
   const [amount, setAmount] = useState(1);
+  const navigate = useNavigate();
+
   const { addProposal, vote, distributeFunds } = useVoteContract();
   const {
     getVotingFactor,
@@ -28,11 +32,13 @@ export default function Home() {
     getProposal,
   } = useVotingContractData();
   const deployContract = deployVotingContract();
+
   return (
     <div className="mx-auto pb-8 px-4 text-center max-w-screen-lg mt-16">
       <p className="text-5xl md:text-6xl max-w-2xl mx-auto font-medium">
         Let's build a dApp on Hedera!
       </p>
+      <AnimatedHr classNames="mt-16 w-72 mx-auto" />
 
       {walletInterface !== null && (
         <>
@@ -72,38 +78,19 @@ export default function Home() {
             </Button>
           </div>
 
-          <p className="max-md:text-sm font-light w-fit mx-auto text-zinc-400 tracking-wider mt-16 mb-6">
-            Other Features
+          <p className="max-md:text-sm font-light w-fit mx-auto text-zinc-400 tracking-wider mt-12 mb-6">
+            Explore
           </p>
-          <div className="flex justify-center gap-4 max-md:flex-col">
+          <div className="flex max-w-screen-md mx-auto justify-center max-md:flex-col gap-4 md:gap-8 items-center">
             <Button
-              variant="contained"
-              onClick={async () => {
-                await deployContract(2, 100, 10, 1);
-              }}
+              size="large"
+              variant="outlined"
+              onClick={() => navigate("/proposals")}
+              className="w-full"
             >
-              deploy contract
+              View Proposals
             </Button>
-            <Button
-              variant="contained"
-              onClick={async () => {
-                await addProposal("test");
-              }}
-            >
-              add proposal
-            </Button>
-            <Button
-              variant="contained"
-              onClick={async () => {
-                const proposal = await getProposal(0);
-                // console.log(proposal);
-              }}
-            >
-              get proposal
-            </Button>
-          </div>
 
-          <div className="mt-8">
             <ConfigureProposal />
           </div>
         </>
