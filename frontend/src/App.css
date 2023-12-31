@@ -189,7 +189,65 @@ code {
   height: auto;
 }
 
-.css-1qxadfk-MuiPaper-root-MuiDialog-paper {
-  background: none;
-  @apply bg-transparent rounded-none;
+.neon-hr {
+  position: relative;
+  box-shadow: 0 0 15px #1371df, 0 0 40px #1371df;
+}
+
+.neon-hr::after {
+  content: "";
+  @apply absolute left-0 h-0.5 w-8 -translate-y-1/2 bg-white/10 blur-[1px];
+  animation: travel 1s linear infinite;
+}
+
+@keyframes travel {
+  0%,
+  100% {
+    left: 0;
+  }
+  50% {
+    left: 100%;
+    transform: translateX(-100%);
+  }
+}
+
+.neon-hr::before {
+  content: "";
+  @apply absolute right-0 h-0.5 w-8 -translate-y-1/2 bg-white/10 blur-[1px];
+  animation: travel2 1s linear infinite;
+}
+
+@keyframes travel2 {
+  0%,
+  100% {
+    right: 0;
+  }
+  50% {
+    right: 100%;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes flicker {
+  70% {
+    opacity: 1;
+  }
+  79% {
+    opacity: 0;
+  }
+  81% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 0;
+  }
+  83% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0;
+  }
+  92.5% {
+    opacity: 1;
+  }
 }

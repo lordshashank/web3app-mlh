@@ -38,6 +38,8 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
     <>
       <Button
         variant="outlined"
+        size="large"
+        className="w-full"
         onClick={() => {
           setIsOpen(true);
         }}
