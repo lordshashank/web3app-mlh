@@ -7,8 +7,20 @@ import AppRouter from './AppRouter';
 import colorBackground from './assets/colors.png';
 import { theme } from './theme';
 import "./App.css";
+import React, { useEffect, useState } from "react";
 
 function App() {
+  const [backendData, setBackendData] = useState([{}])
+
+  useEffect(() => {
+    fetch("/api").then(
+      response => response.json()
+    ).then(
+      data => setBackendData(data)
+    )
+  }, [])
+
+
   return (
     <ThemeProvider theme={theme}>
       <AllWalletsProvider>

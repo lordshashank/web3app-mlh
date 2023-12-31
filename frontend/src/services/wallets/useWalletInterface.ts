@@ -1,5 +1,5 @@
-import { useContext } from "react"
-import { BladeContext } from "../../contexts/BladeContext"
+import { useContext } from "react";
+import { BladeContext } from "../../contexts/BladeContext";
 import { HashconnectContext } from "../../contexts/HashconnectContext";
 import { MetamaskContext } from "../../contexts/MetamaskContext";
 import { bladeWallet } from "./blade/bladeClient";
@@ -17,23 +17,22 @@ export const useWalletInterface = () => {
   if (hashconnectCtx.accountId) {
     return {
       accountId: hashconnectCtx.accountId,
-      walletInterface: hashConnectWallet
+      walletInterface: null,
     };
   } else if (bladeCtx.accountId) {
     return {
       accountId: bladeCtx.accountId,
-      walletInterface: bladeWallet
-
+      walletInterface: bladeWallet,
     };
   } else if (metamaskCtx.metamaskAccountAddress) {
     return {
       accountId: metamaskCtx.metamaskAccountAddress,
-      walletInterface: metamaskWallet
+      walletInterface: metamaskWallet,
     };
   } else {
     return {
       accountId: null,
-      walletInterface: null
+      walletInterface: null,
     };
   }
-}
+};

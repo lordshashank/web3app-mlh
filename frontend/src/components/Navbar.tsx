@@ -1,8 +1,9 @@
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { AppBar, Button, Toolbar, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import HBARLogo from "../assets/hbar-logo.svg";
-import { useWalletInterface } from '../services/wallets/useWalletInterface';
-import { WalletSelectionDialog } from './WalletSelectionDialog';
+import { useWalletInterface } from "../services/wallets/useWalletInterface";
+import { WalletSelectionDialog } from "./WalletSelectionDialog";
+
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
@@ -10,7 +11,7 @@ export default function NavBar() {
 
   const handleConnect = async () => {
     if (accountId) {
-      walletInterface.disconnect();
+      walletInterface?.disconnect();
     } else {
       setOpen(true);
     }
@@ -20,26 +21,31 @@ export default function NavBar() {
     if (accountId) {
       setOpen(false);
     }
-  }, [accountId])
+  }, [accountId]);
 
   return (
-    <AppBar position='relative'>
+
+    <AppBar position="relative">
       <Toolbar>
-        <img src={HBARLogo} alt='An upper case H with a line through the top' className='hbarLogoImg' />
+        <img
+          src={HBARLogo}
+          alt="An upper case H with a line through the top"
+          className="hbarLogoImg"
+        />
         <Typography variant="h6" color="white" pl={1} noWrap>
           Happy Building
         </Typography>
         <Button
-          variant='contained'
+          variant="contained"
           sx={{
-            ml: "auto"
+            ml: "auto",
           }}
           onClick={handleConnect}
         >
-          {accountId ? `Connected: ${accountId}` : 'Connect Wallet'}
+          {accountId ? `Connected: ${accountId}` : "Connect Wallet"}
         </Button>
       </Toolbar>
       <WalletSelectionDialog open={open} onClose={() => setOpen(false)} />
     </AppBar>
-  )
+  );
 }

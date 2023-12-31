@@ -1,5 +1,12 @@
 import { BladeConnector, HederaNetwork } from "@bladelabs/blade-web3.js";
-import { AccountId, ContractExecuteTransaction, ContractId, TokenAssociateTransaction, TokenId, TransferTransaction } from "@hashgraph/sdk";
+import {
+  AccountId,
+  ContractExecuteTransaction,
+  ContractId,
+  TokenAssociateTransaction,
+  TokenId,
+  TransferTransaction,
+} from "@hashgraph/sdk";
 import EventEmitter from "events";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { BladeContext } from "../../../contexts/BladeContext";
@@ -31,22 +38,27 @@ class BladeWallet implements WalletInterface {
     if (!bladeSigner) {
       return null;
     }
-    
+
     const transferHBARTransaction = await new TransferTransaction()
       .addHbarTransfer(bladeSigner.getAccountId().toString(), -amount)
       .addHbarTransfer(toAddress, amount)
       .freezeWithSigner(bladeSigner);
 
-    const transactionId = await transferHBARTransaction.executeWithSigner(bladeSigner)
-      .then(txResult => txResult.transactionId)
+    const transactionId = await transferHBARTransaction
+      .executeWithSigner(bladeSigner)
+      .then((txResult) => txResult.transactionId)
       .catch((error) => {
         console.log(error.message ? error.message : error);
         return null;
-      });;
+      });
     return transactionId;
   }
 
-  async transferFungibleToken(toAddress: AccountId, tokenId: TokenId, amount: number) {
+  async transferFungibleToken(
+    toAddress: AccountId,
+    tokenId: TokenId,
+    amount: number
+  ) {
     const bladeSigner = bladeConnector.getSigner();
     if (!bladeSigner) {
       return null;
@@ -57,8 +69,9 @@ class BladeWallet implements WalletInterface {
       .addTokenTransfer(tokenId, toAddress, amount)
       .freezeWithSigner(bladeSigner);
 
-    const transactionId = await transferTokenTransaction.executeWithSigner(bladeSigner)
-      .then(txResult => txResult.transactionId)
+    const transactionId = await transferTokenTransaction
+      .executeWithSigner(bladeSigner)
+      .then((txResult) => txResult.transactionId)
       .catch((error) => {
         console.log(error.message ? error.message : error);
         return null;
@@ -66,18 +79,28 @@ class BladeWallet implements WalletInterface {
     return transactionId;
   }
 
-  async transferNonFungibleToken(toAddress: AccountId, tokenId: TokenId, serialNumber: number) {
+  async transferNonFungibleToken(
+    toAddress: AccountId,
+    tokenId: TokenId,
+    serialNumber: number
+  ) {
     const bladeSigner = bladeConnector.getSigner();
     if (!bladeSigner) {
       return null;
     }
 
     const transferTokenTransaction = await new TransferTransaction()
-      .addNftTransfer(tokenId, serialNumber, bladeSigner.getAccountId().toString(), toAddress)
+      .addNftTransfer(
+        tokenId,
+        serialNumber,
+        bladeSigner.getAccountId().toString(),
+        toAddress
+      )
       .freezeWithSigner(bladeSigner);
 
-    const transactionId = await transferTokenTransaction.executeWithSigner(bladeSigner)
-      .then(txResult => txResult.transactionId)
+    const transactionId = await transferTokenTransaction
+      .executeWithSigner(bladeSigner)
+      .then((txResult) => txResult.transactionId)
       .catch((error) => {
         console.log(error.message ? error.message : error);
         return null;
@@ -96,8 +119,9 @@ class BladeWallet implements WalletInterface {
       .setTokenIds([tokenId])
       .freezeWithSigner(bladeSigner);
 
-    const transactionId = await associateTokenTransaction.executeWithSigner(bladeSigner)
-      .then(txResult => txResult.transactionId)
+    const transactionId = await associateTokenTransaction
+      .executeWithSigner(bladeSigner)
+      .then((txResult) => txResult.transactionId)
       .catch((error) => {
         console.log(error.message ? error.message : error);
         return null;
@@ -107,7 +131,12 @@ class BladeWallet implements WalletInterface {
 
   // Purpose: build contract execute transaction and send to hashconnect for signing and execution
   // Returns: Promise<TransactionId | null>
-  async executeContractFunction(contractId: ContractId, functionName: string, functionParameters: ContractFunctionParameterBuilder, gasLimit: number) {
+  async executeContractFunction(
+    contractId: ContractId,
+    functionName: string,
+    functionParameters: ContractFunctionParameterBuilder,
+    gasLimit: number
+  ) {
     const bladeSigner = bladeConnector.getSigner();
     if (!bladeSigner) {
       return null;
@@ -120,8 +149,9 @@ class BladeWallet implements WalletInterface {
       .setFunction(functionName, functionParameters.buildHAPIParams());
 
     const txFrozen = await tx.freezeWithSigner(bladeSigner);
-    const transactionId = await txFrozen.executeWithSigner(bladeSigner)
-      .then(txResult => txResult.transactionId)
+    const transactionId = await txFrozen
+      .executeWithSigner(bladeSigner)
+      .then((txResult) => txResult.transactionId)
       .catch((error) => {
         console.log(error.message ? error.message : error);
         return null;
@@ -131,14 +161,17 @@ class BladeWallet implements WalletInterface {
     // after getting the contract call results, use ethers and abi.decode to decode the call_result
     return transactionId;
   }
+
   disconnect() {
     syncWithBladeEvent.emit("syncDisconnect");
     localStorage.removeItem(bladeLocalStorage);
-  };
-};
+  }
+}
 export const bladeWallet = new BladeWallet();
 
-export const connectToBladeWallet = async (skipKillSession: boolean = false) => {
+export const connectToBladeWallet = async (
+  skipKillSession: boolean = false
+) => {
   try {
     if (!skipKillSession) {
       await bladeConnector.killSession(); // kill any existing session to allow pairing a new account
@@ -173,7 +206,7 @@ export const BladeClient = () => {
       console.log(error);
       setAccountId("");
       setIsConnected(false);
-    };
+    }
   }, [setIsConnected, setAccountId]);
   const syncWithBladeDisconnected = useCallback(() => {
     setAccountId("");
@@ -193,13 +226,13 @@ export const BladeClient = () => {
       connectToBladeWallet(true);
     }
 
-    syncWithBladeEvent.on("syncSession", sessionCallback)
-    syncWithBladeEvent.on("syncDisconnect", disconnectCallback)
+    syncWithBladeEvent.on("syncSession", sessionCallback);
+    syncWithBladeEvent.on("syncDisconnect", disconnectCallback);
 
     return () => {
       syncWithBladeEvent.off("syncSession", sessionCallback);
-      syncWithBladeEvent.off("syncDisconnect", disconnectCallback)
-    }
+      syncWithBladeEvent.off("syncDisconnect", disconnectCallback);
+    };
   }, [syncWithBladeSession, syncWithBladeDisconnected, usedBlade]);
 
   useEffect(() => {
