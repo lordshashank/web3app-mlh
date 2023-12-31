@@ -9,6 +9,7 @@ import { useState } from "react";
 import useVoteContract from "../hooks/useVotingContract";
 import deployVotingContract from "../hooks/deployVotingContract";
 import useVotingContractData from "../hooks/useVotingContractData";
+import ConfigureProposal from "../components/ConfigureProposal";
 export default function Home() {
   // Access the wallet interface using a custom hook
   const { walletInterface } = useWalletInterface();
@@ -100,6 +101,10 @@ export default function Home() {
             >
               get proposal
             </Button>
+          </div>
+
+          <div className="mt-8">
+            <ConfigureProposal />
           </div>
         </>
       )}

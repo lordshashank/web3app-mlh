@@ -188,3 +188,8 @@ code {
   width: 30px;
   height: auto;
 }
+
+.css-1qxadfk-MuiPaper-root-MuiDialog-paper {
+  background: none;
+  @apply bg-transparent rounded-none;
+}

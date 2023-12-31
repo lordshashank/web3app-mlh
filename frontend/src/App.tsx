@@ -21,26 +21,6 @@ function App() {
           </div>
           <Footer />
         </div>
-        {/* <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            minHeight: "100dvh",
-            backgroundColor: "#222222",
-            backgroundImage: `url(${colorBackground})`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        >
-          <header>
-            <NavBar />
-          </header>
-          <Box flex={1} p={3}>
-            <AppRouter />
-          </Box>
-          <Footer />
-        </Box> */}
       </AllWalletsProvider>
     </ThemeProvider>
   );
