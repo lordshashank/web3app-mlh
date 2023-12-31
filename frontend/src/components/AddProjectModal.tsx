@@ -1,43 +1,33 @@
+import { AddCircle } from "@mui/icons-material";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import deployVotingContract from "../hooks/deployVotingContract";
 import { useNavigate } from "react-router-dom";
-interface ConfigureProposalProps {}
 
 type formSchema = {
   name: string;
   description: string;
-  votingFactor: number;
-  votesPerVoter: number;
-  projectLimit: number;
-  totalFunds: number;
+  externalLinks: string[];
+  imageUrl: string;
 };
 
-const ConfigureProposal = ({}: ConfigureProposalProps) => {
+interface AddProjectModalProps {}
+
+const AddProjectModal = ({}: AddProjectModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const deployContract = deployVotingContract();
   const navigate = useNavigate();
 
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
       name: "",
       description: "",
-      projectLimit: 0,
-      totalFunds: 0,
-      votesPerVoter: 0,
-      votingFactor: 0,
+      externalLinks: [],
+      imageUrl: "",
     },
   });
 
-  const onSubmit = async (values: formSchema) => {
+  const onSubmit = async (values: any) => {
     try {
-      await deployContract(
-        values.votingFactor,
-        values.votesPerVoter,
-        values.projectLimit,
-        values.totalFunds
-      );
       console.log(values);
       navigate("/proposals");
     } catch (error) {
@@ -47,16 +37,13 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        size="large"
-        className="w-full"
-        onClick={() => {
-          setIsOpen(true);
-        }}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="group flex gap-4 hover:scale-110 transition flex-col justify-center items-center border aspect-[11/16] border-purple-900"
       >
-        Add Funding Proposal
-      </Button>
+        <p className="transition group-hover:text-purple-500">Add Project</p>
+        <AddCircle className="transition group-hover:text-purple-500" />
+      </button>
 
       <Dialog
         className="backdrop-blur-sm"
@@ -65,7 +52,7 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
       >
         <DialogContent className="bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] md:w-[500px] from-[#161c26] via-gray-900 to-slate-900 shadow-lg shadow-black/30">
           <h2 className="text-left w-full md:text-3xl text-2xl font-semibold mt-4 md:px-4">
-            Configure Funding Proposal
+            Add a project
           </h2>
 
           <form
@@ -73,8 +60,17 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
             className="flex flex-col gap-6 md:px-4 mb-4"
           >
             <div className="border-t-2 w-full border-slate-800 mt-4" />
+            <div className="border border-dashed border-zinc-500 w-full relative h-40">
+              <Button
+                component="label"
+                className="border border-white w-full h-40"
+              >
+                Upload File
+                <input type="file" hidden className="absolute inset-0" />
+              </Button>
+            </div>
 
-            <TextField {...register("name")} label="Proposal name" />
+            <TextField {...register("name")} label="Project name" />
 
             <TextField
               {...register("description")}
@@ -82,7 +78,7 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
               multiline
               rows={8}
             />
-
+            {/*
             <div className="flex gap-3 items-center">
               <TextField
                 {...register("votingFactor")}
@@ -109,12 +105,12 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
                 type="number"
                 label="Total funds"
               />
-            </div>
+            </div> */}
 
             <div className="border-t-2 w-full border-slate-800 mb-4" />
 
             <Button type="submit" className="w-full" variant="contained">
-              Deploy Contract
+              Create New Project
             </Button>
           </form>
         </DialogContent>
@@ -123,4 +119,4 @@ const ConfigureProposal = ({}: ConfigureProposalProps) => {
   );
 };
 
-export default ConfigureProposal;
+export default AddProjectModal;

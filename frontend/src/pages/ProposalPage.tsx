@@ -3,6 +3,7 @@ import AnimatedHr from "../components/AnimatedHr";
 import { useNavigate, useParams } from "react-router-dom";
 import { projects, proposals } from "../constants/data";
 import { Button } from "@mui/material";
+import AddProjectModal from "../components/AddProjectModal";
 
 interface ProposalPageProps {}
 
@@ -129,10 +130,7 @@ const ProposalPage = ({}: ProposalPageProps) => {
             </div>
           </div>
         ))}
-        <button className="group flex gap-4 hover:scale-110 transition flex-col justify-center items-center border aspect-[11/16] border-purple-900">
-          <p className="transition group-hover:text-purple-500">Add Project</p>
-          <AddCircle className="transition group-hover:text-purple-500" />
-        </button>
+        <AddProjectModal />
       </div>
     </div>
   );
