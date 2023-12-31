@@ -2,7 +2,7 @@ import { AddCircle } from "@mui/icons-material";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
+import useVoteContract from "../hooks/useVotingContract";
 type formSchema = {
   name: string;
   description: string;
@@ -12,6 +12,7 @@ type formSchema = {
 
 const AddProjectModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { addProposal } = useVoteContract();
 
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
@@ -24,6 +25,7 @@ const AddProjectModal = () => {
 
   const onSubmit = async (values: any) => {
     try {
+      await addProposal(values.name);
       console.log(values);
     } catch (error) {
       console.error("Error deploying contract:", error);

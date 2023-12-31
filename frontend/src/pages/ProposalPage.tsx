@@ -6,10 +6,11 @@ import { Button } from "@mui/material";
 import AddProjectModal from "../components/AddProjectModal";
 import VoteModal from "../components/VoteModal";
 import ProjectCard from "../components/ProjectCard";
-
+import useVoteContract from "../hooks/useVotingContract";
 const ProposalPage = () => {
   const navigate = useNavigate();
   const { name } = useParams();
+  const { distributeFunds } = useVoteContract();
 
   const proposal = proposals.find(
     (proposal) => proposal.name === name?.replaceAll("-", " ")
@@ -29,7 +30,14 @@ const ProposalPage = () => {
         <h1 className="text-2xl md:text-3xl font-medium w-full">
           {proposal.name}
         </h1>
-        <Button className="max-md:w-full" size="small" variant="outlined">
+        <Button
+          className="max-md:w-full"
+          size="small"
+          variant="outlined"
+          onClick={async () => {
+            distributeFunds();
+          }}
+        >
           Distribute Prizes
         </Button>
       </div>
@@ -40,11 +48,10 @@ const ProposalPage = () => {
         ABOUT THIS PROPOSAL
       </p>
       <p className="md:text-lg">
-        Cat gets stuck in tree firefighters try to get cat down firefighters get
-        stuck in tree cat eats firefighters' slippers kitty power ignore the
-        squirrels, you'll never catch them anyway for what a cat-ass-trophy! or
-        purr as loud as possible, be the most annoying cat that you can, and,
-        knock everything off the table.
+        This is a funding proposal for the {proposal.name} project. This would
+        distribute funds worth {proposal.totalFunds} HBAR to{" "}
+        {proposal.projectLimit} projects. It uses quadratic voting to determine
+        the amount of funds each project receives.
       </p>
 
       <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -90,11 +97,16 @@ const ProposalPage = () => {
 
       <div className="grid mt-6 gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            proposalName={name!}
-          />
+          <a
+            href="https://web3apps-19837.devpost.com/submissions/463866-hedfund"
+            target="_blank"
+          >
+            <ProjectCard
+              key={project.id}
+              project={project}
+              proposalName={name!}
+            />
+          </a>
         ))}
         <AddProjectModal />
       </div>

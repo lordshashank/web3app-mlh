@@ -31,7 +31,7 @@ export default function NavBar() {
             alt="An upper case H with a line through the top"
             className="ml-auto hbarLogoImg"
           />
-          <p className="text-white font-semibold ml-2 text-">Happy Building</p>
+          <p className="text-white font-semibold ml-2 text-">HedFund</p>
         </div>
         <button
           title={accountId ? `Connected: ${accountId}` : "Connect Wallet"}

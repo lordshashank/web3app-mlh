@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-
+import useVoteContract from "../hooks/useVotingContract";
 type formSchema = {
   voteAmount: number;
 };
@@ -12,11 +12,20 @@ interface VoteModalProps {
 }
 
 const VoteModal = ({ name, onClose, open }: VoteModalProps) => {
+  const { vote } = useVoteContract();
   const { register, handleSubmit } = useForm<formSchema>({
     defaultValues: {
       voteAmount: 1,
     },
   });
+  const onSubmit = async (values: formSchema) => {
+    try {
+      await vote(0, values.voteAmount);
+      console.log(values);
+    } catch (error) {
+      console.error("Error deploying contract:", error);
+    }
+  };
 
   return (
     <>
@@ -27,7 +36,7 @@ const VoteModal = ({ name, onClose, open }: VoteModalProps) => {
           </h2>
 
           <form
-            onSubmit={() => {}}
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-6 md:px-4 mb-4"
           >
             <div className="border-t-2 w-full border-slate-800 mt-4" />

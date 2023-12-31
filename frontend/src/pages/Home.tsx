@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <div className="mx-auto pb-8 px-4 text-center max-w-screen-lg mt-16">
       <p className="text-5xl md:text-6xl max-w-2xl mx-auto font-medium">
-        Let's build a dApp on Hedera!
+        Seeding Success on Hedera: Grants for Pioneering Projects
       </p>
       <AnimatedHr classNames="mt-16 w-72 mx-auto" />
 

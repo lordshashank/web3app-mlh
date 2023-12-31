@@ -28,7 +28,7 @@ const useVoteContract = () => {
     }
   };
 
-  const vote = async (proposal: string, votes: number) => {
+  const vote = async (proposal: number, votes: number) => {
     try {
       const tx = await contract.vote(proposal, votes, { gasLimit: 1000000 });
       await tx.wait();
